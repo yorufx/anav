@@ -1,6 +1,11 @@
 <h1 align="center">A Navigation</h1>
 
 <p align="center">
+  <a href="https://github.com/yorufx/anav/actions/workflows/ci.yml"><img src="https://github.com/yorufx/anav/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/yorufx/anav/actions/workflows/docker.yml"><img src="https://github.com/yorufx/anav/actions/workflows/docker.yml/badge.svg" alt="Docker"></a>
+</p>
+
+<p align="center">
   <a href="./README.en.md">English</a> | <a href="./README.md">简体中文</a>
 </p>
 
@@ -58,7 +63,47 @@ cargo build --release
 
 ### Docker
 
-TODO
+Pull and start the image:
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/yorufx/anav:latest
+
+# Start the container (with default configuration)
+docker run -d \
+  --name anav \
+  -p 33989:33989 \
+  -v $(pwd)/config:/app/config \
+  ghcr.io/yorufx/anav:latest
+```
+
+Or with custom environment variables:
+
+```bash
+docker run -d \
+  --name anav \
+  -p 33989:33989 \
+  -v $(pwd)/config:/app/config \
+  -e PORT=33989 \
+  -e USERNAME=admin \
+  -e PASSWORD=your_password \
+  ghcr.io/yorufx/anav:latest
+```
+
+**Parameter Description:**
+
+- `-p 33989:33989` - Port mapping, maps port 33989 from container to host port 33989
+- `-v $(pwd)/config:/app/config` - Mount configuration directory for persisting bookmarks, icons, and other data
+- `-e PORT=33989` - Set service port (optional, default 33989)
+- `-e USERNAME=admin` - Set login username (optional, default admin)
+- `-e PASSWORD=your_password` - Set login password (optional, default admin)
+
+**Access:**
+After starting, access `http://localhost:33989` to use the application.
+
+### Change Password
+
+The initial username and password are specified by environment variables and saved in `config/config.json`. To change them later, edit this file directly and restart the container.
 
 ## User Guide 📖
 

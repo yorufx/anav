@@ -1,6 +1,11 @@
 <h1 align="center">A Navigation</h1>
 
 <p align="center">
+  <a href="https://github.com/yorufx/anav/actions/workflows/ci.yml"><img src="https://github.com/yorufx/anav/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/yorufx/anav/actions/workflows/docker.yml"><img src="https://github.com/yorufx/anav/actions/workflows/docker.yml/badge.svg" alt="Docker"></a>
+</p>
+
+<p align="center">
   <a href="./README.en.md">English</a> | <a href="./README.md">简体中文</a>
 </p>
 
@@ -58,7 +63,47 @@ cargo build --release
 
 ### Docker
 
-TODO
+拉取并启动镜像：
+
+```bash
+# 拉取最新镜像
+docker pull ghcr.io/yorufx/anav:latest
+
+# 启动容器（使用默认配置）
+docker run -d \
+  --name anav \
+  -p 33989:33989 \
+  -v $(pwd)/config:/app/config \
+  ghcr.io/yorufx/anav:latest
+```
+
+或者使用自定义环境变量：
+
+```bash
+docker run -d \
+  --name anav \
+  -p 33989:33989 \
+  -v $(pwd)/config:/app/config \
+  -e PORT=33989 \
+  -e USERNAME=admin \
+  -e PASSWORD=your_password \
+  ghcr.io/yorufx/anav:latest
+```
+
+**参数说明：**
+
+- `-p 33989:33989` - 端口映射，将容器内的 33989 端口映射到主机的 33989 端口
+- `-v $(pwd)/config:/app/config` - 挂载配置目录，用于持久化书签、图标等数据
+- `-e PORT=33989` - 设置服务端口（可选，默认 33989）
+- `-e USERNAME=admin` - 设置登录用户名（可选，默认 admin）
+- `-e PASSWORD=your_password` - 设置登录密码（可选，默认 admin）
+
+**访问：**
+启动后访问 `http://localhost:33989` 即可使用。
+
+### 修改密码
+
+初始用户名和密码由环境变量指定，保存在 `config/config.json` 中，后续修改直接修改此文件并重启容器。
 
 ## 使用教程 📖
 
@@ -82,7 +127,7 @@ TODO
 
 书签可配置搜索模板 URL，实现快捷选择搜索引擎：
 
-例如对于百度翻译，配置搜索 URL 为 `https://fanyi.baidu.com/mtpe-individual/transText?query={}`，对于配置了搜索 URL 的书签，TAB 键不再直接跳转网页，而是使用改书签进行搜索：
+例如对于百度翻译，配置搜索 URL 为 `https://fanyi.baidu.com/mtpe-individual/transText?query={}`，对于配置了搜索 URL 的书签，TAB 键不再直接跳转网页，而是使用该书签进行搜索：
 
 ![书签搜索](./docs/images/2026-01-12-22-17-02.png)
 

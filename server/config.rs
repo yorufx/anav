@@ -23,7 +23,7 @@ impl Default for AuthConfig {
         Self {
             username: USERNAME.to_string(),
             password: PASSWORD.to_string(),
-            enabled: false,
+            enabled: true,
             // 7 days
             session_duration_secs: 7 * 24 * 60 * 60,
         }
