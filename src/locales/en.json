@@ -1,0 +1,188 @@
+{
+  "common": {
+    "all": "All",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "creating": "Creating...",
+    "settings": "Settings",
+    "name": "Name",
+    "title": "Title",
+    "url": "URL",
+    "icon": "Icon",
+    "tags": "Tags",
+    "optional": "(Optional)",
+    "required": "*",
+    "current": "(Current)",
+    "notSelected": "Not Selected"
+  },
+  "homePage": {
+    "noBookmarksFound": "No matching bookmarks found",
+    "loadBookmarksFailed": "Failed to load bookmarks",
+    "updateBookmarkSortFailed": "Failed to update bookmark sort",
+    "restoreOriginalOrder": "Restore original order if update fails",
+    "deleteBookmarkFailed": "Failed to delete bookmark",
+    "checkingIntranet": "Checking intranet environment",
+    "checkIntranet": "Check if in intranet environment",
+    "noCorsMode": "Use no-cors mode to avoid CORS issues, consider intranet if request succeeds",
+    "timeoutSeconds": "3 second timeout",
+    "requestFailed": "Request failed or timed out, consider not in intranet"
+  },
+  "floatingActionButton": {
+    "settings": "Settings",
+    "intranet": "Intranet",
+    "extranet": "Extranet",
+    "addBookmark": "Add Bookmark",
+    "detailedSettings": "Detailed Settings"
+  },
+  "bookmarkCard": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "profileManagement": "Profile Management",
+    "profileManagementDesc": "Manage your bookmark profiles",
+    "new": "New",
+    "noProfile": "No Profile",
+    "appearance": "Appearance",
+    "appearanceDesc": "Switch between light and dark themes",
+    "language": "Language",
+    "languageDesc": "Select interface display language",
+    "account": "Account",
+    "accountDesc": "Manage your account settings",
+    "logout": "Logout",
+    "loggingOut": "Logging out...",
+    "about": "About",
+    "loadProfileListFailed": "Failed to load profile list",
+    "loadProfileFailed": "Failed to load profile",
+    "deleteFailed": "Delete failed",
+    "renameFailed": "Rename failed",
+    "renameProfile": "Rename",
+    "sortFailed": "Sort failed",
+    "restoreOrder": "Restore original order",
+    "logoutFailed": "Logout failed",
+    "profileDialog": {
+      "newTitle": "New Profile",
+      "editTitle": "Edit Profile",
+      "newDesc": "Create a new profile",
+      "editDesc": "Modify profile settings",
+      "nameRequired": "Name cannot be empty",
+      "customSearchUrlRequired": "Please enter custom search engine URL",
+      "searchUrlPlaceholderRequired": "Search engine URL must contain {} as search keyword placeholder",
+      "operationFailed": "Operation failed",
+      "namePlaceholder": "e.g., Work, Personal",
+      "defaultSearchEngine": "Default Search Engine",
+      "selectSearchEngine": "Select search engine",
+      "customSearchUrl": "Custom Search URL",
+      "customSearchUrlPlaceholder": "https://example.com/search?q={}",
+      "searchUrlPlaceholderHint": "Use {} as search keyword placeholder",
+      "intranetCheckUrl": "Intranet Check URL (Optional)",
+      "intranetCheckUrlPlaceholder": "https://intranet.company.com/ping",
+      "intranetCheckUrlHint": "Used to detect if in intranet environment, if this URL is accessible, it's considered intranet",
+      "backgroundImages": "Background Images",
+      "backgroundImagesDesc": "Set background images for the profile, system will automatically identify landscape and portrait",
+      "uploadBackgroundImage": "Upload Background Image",
+      "landscapeImages": "Landscape Images",
+      "portraitImages": "Portrait Images",
+      "noBackgroundImages": "No background images",
+      "pendingImages": "Pending upload: {{count}} image(s)",
+      "uploading": "Uploading...",
+      "uploadFailed": "Upload failed",
+      "deleteFailed": "Delete failed",
+      "imageTooLarge": "Image file too large",
+      "invalidImageFormat": "Unsupported image format"
+    },
+    "deleteConfirmDialog": {
+      "title": "Confirm Delete",
+      "message": "Are you sure you want to delete Profile \"{{name}}\"? This action cannot be undone, all bookmark data will be permanently deleted."
+    },
+    "renameDialog": {
+      "title": "Rename Profile",
+      "description": "Set a new name for Profile \"{{name}}\"",
+      "nameRequired": "Name cannot be empty",
+      "namePlaceholder": "e.g., Work, Personal",
+      "renameFailed": "Rename failed"
+    },
+    "searchEngines": {
+      "google": "Google",
+      "baidu": "Baidu",
+      "bing": "Bing",
+      "custom": "Custom"
+    }
+  },
+  "newBookmarkDialog": {
+    "editTitle": "Edit Bookmark",
+    "createTitle": "New Bookmark",
+    "editDesc": "Modify bookmark information",
+    "createDesc": "Add a new bookmark to your collection",
+    "titleRequired": "Title and URL are required",
+    "searchUrlPlaceholderRequired": "Search URL must contain one {} as search keyword placeholder",
+    "searchUrlOnlyOnePlaceholder": "Search URL can only contain one {} placeholder",
+    "createBookmarkFailed": "Failed to create bookmark",
+    "titlePlaceholder": "e.g., GitHub",
+    "intranetUrl": "Intranet URL (Optional)",
+    "intranetUrlPlaceholder": "http://internal.example.com",
+    "searchTitle": "Search Title (Optional)",
+    "searchTitlePlaceholder": "Title for search",
+    "searchUrl": "Search URL (Optional)",
+    "searchUrlPlaceholder": "https://example.com/search?q={}",
+    "tagPlaceholder": "Press Enter after typing to add tag..."
+  },
+  "deleteBookmarkDialog": {
+    "title": "Confirm Delete",
+    "message": "Are you sure you want to delete bookmark \"{{title}}\"? This action cannot be undone."
+  },
+  "iconPicker": {
+    "selectImageFile": "Please select an image file",
+    "imageSizeExceeded": "Image size cannot exceed 2MB",
+    "fillUrlFirst": "Please fill in URL first",
+    "cannotGetIcon": "Cannot get icon from this domain",
+    "fetchIconFailed": "Failed to fetch icon",
+    "iconPreview": "Icon Preview",
+    "uploadIcon": "Upload Icon",
+    "fetchFromUrl": "Fetch from URL",
+    "foundIcons": "Found {{count}} icons, please select one:",
+    "iconOption": "Option {{index}}",
+    "cancel": "Cancel"
+  },
+  "searchBox": {
+    "placeholder": "Search bookmarks or visit website directly...",
+    "searchInBookmark": "Search in {{title}}...",
+    "search": "Search",
+    "open": "Open {{title}}",
+    "useBookmarkSearch": "Use {{title}} to search",
+    "openBookmark": "Open {{title}}"
+  },
+  "themeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggleTheme": "Toggle Theme"
+  },
+  "languageToggle": {
+    "zh": "中文",
+    "en": "English",
+    "toggleLanguage": "Toggle Language"
+  },
+  "loginPage": {
+    "title": "Login",
+    "description": "Please enter your username and password",
+    "username": "Username",
+    "usernamePlaceholder": "Please enter username",
+    "password": "Password",
+    "passwordPlaceholder": "Please enter password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "loginFailed": "Login failed, please check username and password"
+  },
+  "axios": {
+    "networkError": "Network error, please check network connection",
+    "requestFailed": "Request failed"
+  }
+}

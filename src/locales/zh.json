@@ -1,0 +1,188 @@
+{
+  "common": {
+    "all": "全部",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "loading": "加载中...",
+    "saving": "保存中...",
+    "deleting": "删除中...",
+    "creating": "创建中...",
+    "settings": "设置",
+    "name": "名称",
+    "title": "标题",
+    "url": "URL",
+    "icon": "图标",
+    "tags": "标签",
+    "optional": "（可选）",
+    "required": "*",
+    "current": "（当前）",
+    "notSelected": "未选择"
+  },
+  "homePage": {
+    "noBookmarksFound": "没有找到匹配的书签",
+    "loadBookmarksFailed": "加载书签失败",
+    "updateBookmarkSortFailed": "更新书签排序失败",
+    "restoreOriginalOrder": "如果更新失败，恢复原来的顺序",
+    "deleteBookmarkFailed": "删除书签失败",
+    "checkingIntranet": "检测内网环境",
+    "checkIntranet": "检测是否在内网环境",
+    "noCorsMode": "使用 no-cors 模式避免 CORS 问题，只要请求成功就认为在内网",
+    "timeoutSeconds": "3秒超时",
+    "requestFailed": "请求失败或超时，认为不在内网"
+  },
+  "floatingActionButton": {
+    "settings": "设置",
+    "intranet": "内网",
+    "extranet": "外网",
+    "addBookmark": "添加书签",
+    "detailedSettings": "详细设置"
+  },
+  "bookmarkCard": {
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "settingsPage": {
+    "title": "设置",
+    "profileManagement": "Profile 管理",
+    "profileManagementDesc": "管理您的书签配置文件",
+    "new": "新建",
+    "noProfile": "暂无 Profile",
+    "appearance": "外观",
+    "appearanceDesc": "切换明暗主题",
+    "language": "语言",
+    "languageDesc": "选择界面显示语言",
+    "account": "账户",
+    "accountDesc": "管理您的账户设置",
+    "logout": "登出",
+    "loggingOut": "登出中...",
+    "about": "关于",
+    "loadProfileListFailed": "加载 Profile 列表失败",
+    "loadProfileFailed": "加载 Profile 失败",
+    "deleteFailed": "删除失败",
+    "renameFailed": "改名失败",
+    "renameProfile": "改名",
+    "sortFailed": "排序失败",
+    "restoreOrder": "恢复原来的顺序",
+    "logoutFailed": "登出失败",
+    "profileDialog": {
+      "newTitle": "新建 Profile",
+      "editTitle": "编辑 Profile",
+      "newDesc": "创建一个新的 Profile",
+      "editDesc": "修改 Profile 设置",
+      "nameRequired": "名称不能为空",
+      "customSearchUrlRequired": "请输入自定义搜索引擎 URL",
+      "searchUrlPlaceholderRequired": "搜索引擎 URL 必须包含 {} 作为搜索关键词占位符",
+      "operationFailed": "操作失败",
+      "namePlaceholder": "例如：工作、个人",
+      "defaultSearchEngine": "默认搜索引擎",
+      "selectSearchEngine": "选择搜索引擎",
+      "customSearchUrl": "自定义搜索 URL",
+      "customSearchUrlPlaceholder": "https://example.com/search?q={}",
+      "searchUrlPlaceholderHint": "使用 {} 作为搜索关键词占位符",
+      "intranetCheckUrl": "内网检测 URL（可选）",
+      "intranetCheckUrlPlaceholder": "https://intranet.company.com/ping",
+      "intranetCheckUrlHint": "用于检测是否处于内网环境，如果可以访问该 URL 则视为内网",
+      "backgroundImages": "背景图",
+      "backgroundImagesDesc": "为 Profile 设置背景图，系统会自动识别横图和竖图",
+      "uploadBackgroundImage": "上传背景图",
+      "landscapeImages": "横图",
+      "portraitImages": "竖图",
+      "noBackgroundImages": "暂无背景图",
+      "pendingImages": "待上传：{{count}} 张",
+      "uploading": "上传中...",
+      "uploadFailed": "上传失败",
+      "deleteFailed": "删除失败",
+      "imageTooLarge": "图片文件过大",
+      "invalidImageFormat": "不支持的图片格式"
+    },
+    "deleteConfirmDialog": {
+      "title": "确认删除",
+      "message": "确定要删除 Profile \"{{name}}\" 吗？此操作无法撤销，所有书签数据将被永久删除。"
+    },
+    "renameDialog": {
+      "title": "改名 Profile",
+      "description": "为 Profile \"{{name}}\" 设置新名称",
+      "nameRequired": "名称不能为空",
+      "namePlaceholder": "例如：工作、个人",
+      "renameFailed": "改名失败"
+    },
+    "searchEngines": {
+      "google": "Google",
+      "baidu": "百度",
+      "bing": "Bing",
+      "custom": "自定义"
+    }
+  },
+  "newBookmarkDialog": {
+    "editTitle": "编辑书签",
+    "createTitle": "新建书签",
+    "editDesc": "修改书签信息",
+    "createDesc": "添加一个新的书签到您的收藏",
+    "titleRequired": "标题和 URL 是必填项",
+    "searchUrlPlaceholderRequired": "搜索 URL 必须包含一个 {} 作为搜索关键词占位符",
+    "searchUrlOnlyOnePlaceholder": "搜索 URL 只能包含一个 {} 占位符",
+    "createBookmarkFailed": "创建书签失败",
+    "titlePlaceholder": "例如：GitHub",
+    "intranetUrl": "内网 URL（可选）",
+    "intranetUrlPlaceholder": "http://internal.example.com",
+    "searchTitle": "搜索标题（可选）",
+    "searchTitlePlaceholder": "用于搜索的标题",
+    "searchUrl": "搜索 URL（可选）",
+    "searchUrlPlaceholder": "https://example.com/search?q={}",
+    "tagPlaceholder": "输入后按 Enter 添加标签..."
+  },
+  "deleteBookmarkDialog": {
+    "title": "确认删除",
+    "message": "确定要删除书签 \"{{title}}\" 吗？此操作无法撤销。"
+  },
+  "iconPicker": {
+    "selectImageFile": "请选择图片文件",
+    "imageSizeExceeded": "图片大小不能超过 2MB",
+    "fillUrlFirst": "请先填写 URL",
+    "cannotGetIcon": "无法从该域名获取图标",
+    "fetchIconFailed": "获取图标失败",
+    "iconPreview": "图标预览",
+    "uploadIcon": "上传图标",
+    "fetchFromUrl": "从 URL 获取",
+    "foundIcons": "找到 {{count}} 个图标，请选择一个：",
+    "iconOption": "选项 {{index}}",
+    "cancel": "取消"
+  },
+  "searchBox": {
+    "placeholder": "搜索书签或直接访问网站...",
+    "searchInBookmark": "在 {{title}} 中搜索...",
+    "search": "搜索",
+    "open": "打开{{title}}",
+    "useBookmarkSearch": "使用 {{title}} 搜索",
+    "openBookmark": "打开 {{title}}"
+  },
+  "themeToggle": {
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统",
+    "toggleTheme": "切换主题"
+  },
+  "languageToggle": {
+    "zh": "中文",
+    "en": "English",
+    "toggleLanguage": "切换语言"
+  },
+  "loginPage": {
+    "title": "登录",
+    "description": "请输入您的用户名和密码",
+    "username": "用户名",
+    "usernamePlaceholder": "请输入用户名",
+    "password": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "login": "登录",
+    "loggingIn": "登录中...",
+    "loginFailed": "登录失败，请检查用户名和密码"
+  },
+  "axios": {
+    "networkError": "网络错误，请检查网络连接",
+    "requestFailed": "请求失败"
+  }
+}

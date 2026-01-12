@@ -1,0 +1,167 @@
+import type { BackgroundImage, BookmarkProfile, ImageOrientation } from "@/types/bookmark";
+import { apiClient } from "./axios";
+import { useAppStore } from "./store";
+
+export async function login(username: string, password: string): Promise<void> {
+  await apiClient.post("/api/login", {
+    username,
+    password,
+  });
+}
+
+export async function logout(): Promise<void> {
+  await apiClient.post("/api/logout");
+}
+
+export async function getProfile(profile?: string): Promise<BookmarkProfile> {
+  const currentProfile = useAppStore.getState().currentProfile;
+  const profileToUse = profile ?? currentProfile ?? undefined;
+  const params = profileToUse ? { profile: profileToUse } : {};
+  const response = await apiClient.get("/api/profile", { params });
+  return response.data;
+}
+
+export async function createProfile(profile: BookmarkProfile): Promise<void> {
+  await apiClient.post("/api/profile", profile);
+}
+
+export async function updateProfile(profile: BookmarkProfile): Promise<void> {
+  await apiClient.put("/api/profile", profile);
+}
+
+export async function deleteProfile(profile: string): Promise<void> {
+  await apiClient.delete("/api/profile", {
+    params: { profile },
+  });
+}
+
+export async function renameProfile(
+  name: string,
+  newName: string
+): Promise<void> {
+  await apiClient.post("/api/profile/rename", {
+    name,
+    new_name: newName,
+  });
+}
+
+export async function getAllProfileNames(): Promise<string[]> {
+  const response = await apiClient.get("/api/profile/names");
+  return response.data;
+}
+
+export async function sortProfiles(profileNames: string[]): Promise<void> {
+  await apiClient.post("/api/profile/sort", profileNames);
+}
+
+export async function setIcon(
+  bookmarkId: string,
+  iconFile: File
+): Promise<void> {
+  const formData = new FormData();
+  formData.append("icon", iconFile);
+  await apiClient.post(`/api/images/icon/${bookmarkId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export function iconUrl(iconFilename: string): string {
+  return `${apiClient.defaults.baseURL}/images/icons/${iconFilename}`;
+}
+
+export interface FaviconIcon {
+  url: string;
+  data: string; // base64 encoded
+  content_type: string;
+}
+
+export interface FaviconResult {
+  icons: FaviconIcon[];
+}
+
+export async function fetchFavicon(url: string): Promise<FaviconResult> {
+  const response = await apiClient.get("/api/fetch-favicon", {
+    params: { url },
+  });
+  return response.data;
+}
+
+export interface BackgroundImageInfo {
+  id: string;
+  filename: string;
+  orientation: ImageOrientation;
+  url: string;
+}
+
+export interface BackgroundImageListResponse {
+  images: BackgroundImageInfo[];
+}
+
+/**
+ * 上传背景图
+ * @param profile Profile 名称
+ * @param imageFile 图片文件
+ */
+export async function uploadBackgroundImage(
+  profile: string,
+  imageFile: File
+): Promise<BackgroundImage> {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  const response = await apiClient.post<BackgroundImage>(
+    "/api/background-image",
+    formData,
+    {
+      params: {
+        profile,
+      },
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+}
+
+/**
+ * 获取背景图列表
+ * @param profile Profile 名称
+ */
+export async function getBackgroundImages(
+  profile: string
+): Promise<BackgroundImageListResponse> {
+  const response = await apiClient.get<BackgroundImageListResponse>(
+    "/api/background-image",
+    {
+      params: { profile },
+    }
+  );
+  return response.data;
+}
+
+/**
+ * 删除背景图
+ * @param profile Profile 名称
+ * @param imageId 背景图 ID
+ */
+export async function deleteBackgroundImage(
+  profile: string,
+  imageId: string
+): Promise<void> {
+  await apiClient.delete("/api/background-image/delete", {
+    params: {
+      profile,
+      id: imageId,
+    },
+  });
+}
+
+/**
+ * 获取背景图 URL
+ * @param filename 背景图文件名
+ */
+export function backgroundImageUrl(filename: string): string {
+  return `${apiClient.defaults.baseURL}/images/backgrounds/${filename}`;
+}
