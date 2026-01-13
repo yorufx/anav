@@ -254,7 +254,7 @@ export function HomePage() {
         "{}",
         encodeURIComponent(searchQuery)
       );
-      window.open(searchUrl, "_blank");
+      window.location.href = searchUrl;
     }
   };
 
