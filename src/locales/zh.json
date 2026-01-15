@@ -42,7 +42,9 @@
   },
   "bookmarkCard": {
     "edit": "编辑",
-    "delete": "删除"
+    "delete": "删除",
+    "openIntranet": "打开内网链接",
+    "openExtranet": "打开外网链接"
   },
   "settingsPage": {
     "title": "设置",

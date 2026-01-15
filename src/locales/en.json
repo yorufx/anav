@@ -42,7 +42,9 @@
   },
   "bookmarkCard": {
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "openIntranet": "Open Intranet Link",
+    "openExtranet": "Open Extranet Link"
   },
   "settingsPage": {
     "title": "Settings",
