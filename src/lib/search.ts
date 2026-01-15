@@ -58,7 +58,8 @@ function calculateTextScore(
   let queryIndex = 0;
   let consecutiveMatches = 0;
   let maxConsecutive = 0;
-  let lastMatchIndex = -1;
+  // 初始化为 -2 避免当 i=0 时 lastMatchIndex === i-1 (-1 === -1) 意外为 true
+  let lastMatchIndex = -2;
 
   for (let i = 0; i < normalizedText.length && queryIndex < queryChars.length; i++) {
     if (normalizedText[i] === queryChars[queryIndex]) {
