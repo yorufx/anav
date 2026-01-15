@@ -174,17 +174,20 @@ pub struct RenameProfileRequest {
 pub async fn rename_profile(
     State(app_state): State<AppState>,
     Json(payload): Json<RenameProfileRequest>,
-) -> Result<()> {
+) -> Result<Json<VersionResponse>> {
     let mut storage = app_state.storage.lock().await;
     if storage.profiles.iter().any(|p| p.name == payload.new_name) {
         return Err(Error::ProfileAlreadyExists);
     }
-    if let Some(profile) = storage.get_profile_mut(&payload.name) {
+    let new_version = if let Some(profile) = storage.get_profile_mut(&payload.name) {
         profile.name = payload.new_name;
         profile.regenerate_version();
-    }
+        profile.version.clone()
+    } else {
+        None
+    };
     storage.save_profiles().await?;
-    Ok(())
+    Ok(Json(VersionResponse { version: new_version }))
 }
 
 pub async fn get_all_profile_names(State(app_state): State<AppState>) -> Result<Json<Vec<String>>> {
@@ -462,12 +465,23 @@ pub struct UploadBackgroundImageQuery {
     pub profile: String,
 }
 
+#[derive(Debug, Serialize)]
+pub struct UploadBackgroundImageResponse {
+    pub image: BackgroundImage,
+    pub version: Option<String>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct VersionResponse {
+    pub version: Option<String>,
+}
+
 /// 上传背景图
 pub async fn upload_background_image(
     State(app_state): State<AppState>,
     Query(params): Query<UploadBackgroundImageQuery>,
     mut multipart: Multipart,
-) -> Result<Json<BackgroundImage>> {
+) -> Result<Json<UploadBackgroundImageResponse>> {
     let mut storage = app_state.storage.lock().await;
     let Some(profile) = storage.get_profile_mut(&params.profile) else {
         return Err(Error::ProfileNotFound);
@@ -534,8 +548,15 @@ pub async fn upload_background_image(
     // 添加到 profile
     profile.background_images.push(background_image.clone());
     profile.regenerate_version();
+    let new_version = profile.version.clone();
 
-    Ok(Json(background_image))
+    // Persist changes to disk
+    storage.save_profiles().await?;
+
+    Ok(Json(UploadBackgroundImageResponse {
+        image: background_image,
+        version: new_version,
+    }))
 }
 
 #[derive(Debug, Deserialize)]
@@ -548,7 +569,7 @@ pub struct DeleteBackgroundImageQuery {
 pub async fn delete_background_image(
     State(app_state): State<AppState>,
     Query(params): Query<DeleteBackgroundImageQuery>,
-) -> Result<()> {
+) -> Result<Json<VersionResponse>> {
     let mut storage = app_state.storage.lock().await;
     let Some(profile) = storage.get_profile_mut(&params.profile) else {
         return Err(Error::ProfileNotFound);
@@ -562,15 +583,19 @@ pub async fn delete_background_image(
     {
         let bg = profile.background_images.remove(index);
         profile.regenerate_version();
+        let new_version = profile.version.clone();
 
         // 删除文件
         let bg_path = format!("{}/{}", BACKGROUND_DIR, bg.filename);
         let _ = tokio::fs::remove_file(bg_path).await;
-    } else {
-        return Err(Error::BadRequest);
-    }
 
-    Ok(())
+        // Persist changes to disk
+        storage.save_profiles().await?;
+
+        Ok(Json(VersionResponse { version: new_version }))
+    } else {
+        Err(Error::BadRequest)
+    }
 }
 
 #[derive(Debug, Serialize)]

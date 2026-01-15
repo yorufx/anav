@@ -20,8 +20,10 @@ export async function getProfile(profile?: string): Promise<BookmarkProfile> {
   const response = await apiClient.get("/api/profile", { params });
   const profileData: BookmarkProfile = response.data;
 
-  // Update the stored version
-  if (profileData.version) {
+  // Only update the stored version if fetching the current profile
+  // This prevents overwriting the version when previewing other profiles
+  const isCurrentProfile = !profile || profile === currentProfile || (!currentProfile && !profile);
+  if (isCurrentProfile && profileData.version) {
     useAppStore.getState().setProfileVersion(profileData.version);
   }
 
@@ -56,14 +58,24 @@ export async function deleteProfile(profile: string): Promise<void> {
   });
 }
 
+interface VersionResponse {
+  version?: string;
+}
+
 export async function renameProfile(
   name: string,
   newName: string
 ): Promise<void> {
-  await apiClient.post("/api/profile/rename", {
+  const response = await apiClient.post<VersionResponse>("/api/profile/rename", {
     name,
     new_name: newName,
   });
+
+  // Update the stored version if renaming the current profile
+  const currentProfile = useAppStore.getState().currentProfile;
+  if (name === currentProfile && response.data.version) {
+    useAppStore.getState().setProfileVersion(response.data.version);
+  }
 }
 
 export async function getAllProfileNames(): Promise<string[]> {
@@ -120,6 +132,11 @@ export interface BackgroundImageListResponse {
   images: BackgroundImageInfo[];
 }
 
+interface UploadBackgroundImageResponse {
+  image: BackgroundImage;
+  version?: string;
+}
+
 /**
  * 上传背景图
  * @param profile Profile 名称
@@ -131,7 +148,7 @@ export async function uploadBackgroundImage(
 ): Promise<BackgroundImage> {
   const formData = new FormData();
   formData.append("image", imageFile);
-  const response = await apiClient.post<BackgroundImage>(
+  const response = await apiClient.post<UploadBackgroundImageResponse>(
     "/api/background-image",
     formData,
     {
@@ -143,7 +160,14 @@ export async function uploadBackgroundImage(
       },
     }
   );
-  return response.data;
+
+  // Update the stored version if uploading to the current profile
+  const currentProfile = useAppStore.getState().currentProfile;
+  if (profile === currentProfile && response.data.version) {
+    useAppStore.getState().setProfileVersion(response.data.version);
+  }
+
+  return response.data.image;
 }
 
 /**
@@ -171,12 +195,18 @@ export async function deleteBackgroundImage(
   profile: string,
   imageId: string
 ): Promise<void> {
-  await apiClient.delete("/api/background-image/delete", {
+  const response = await apiClient.delete<VersionResponse>("/api/background-image/delete", {
     params: {
       profile,
       id: imageId,
     },
   });
+
+  // Update the stored version if deleting from the current profile
+  const currentProfile = useAppStore.getState().currentProfile;
+  if (profile === currentProfile && response.data.version) {
+    useAppStore.getState().setProfileVersion(response.data.version);
+  }
 }
 
 /**
