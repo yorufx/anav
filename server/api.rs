@@ -157,6 +157,9 @@ pub async fn update_profile(
             return Err(Error::VersionConflict);
         }
 
+        // Preserve background_images - they should be managed via dedicated APIs
+        payload.background_images = profile.background_images.clone();
+
         // Regenerate version for the update
         payload.regenerate_version();
         *profile = payload;
