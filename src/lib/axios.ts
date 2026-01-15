@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 import i18n from "./i18n";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
@@ -52,16 +53,21 @@ apiClient.interceptors.response.use(
           window.location.hash = "#/login";
         }
         error.message = "UNAUTHORIZED";
+        // 401 不显示 toast，直接跳转登录页
       } else if (status === 409) {
         // 版本冲突
         error.message = i18n.t("axios.versionConflict");
+        toast.error(error.message);
       } else {
         error.message = message;
+        toast.error(error.message);
       }
     } else if (error.request) {
       error.message = i18n.t("axios.networkError");
+      toast.error(error.message);
     } else {
       error.message = error.message || i18n.t("axios.requestFailed");
+      toast.error(error.message);
     }
 
     return Promise.reject(error);
