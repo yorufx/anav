@@ -97,15 +97,6 @@ impl Storage {
         self.profiles.iter_mut().find(|p| p.name == name)
     }
 
-    pub async fn get_default_profile(&mut self) -> &BookmarkProfile {
-        if self.profiles.is_empty() {
-            self.profiles.push(BookmarkProfile::default());
-            let _ = self.save_profiles().await;
-        }
-
-        &self.profiles[0]
-    }
-
     pub async fn get_default_profile_mut(&mut self) -> &mut BookmarkProfile {
         if self.profiles.is_empty() {
             self.profiles.push(BookmarkProfile::default());

@@ -150,12 +150,11 @@ pub async fn update_profile(
     let mut storage = app_state.storage.lock().await;
     if let Some(profile) = storage.get_profile_mut(&payload.name) {
         // Verify version consistency (skip if client version is None for backward compatibility)
-        if let Some(client_version) = &payload.version {
-            if let Some(server_version) = &profile.version {
-                if client_version != server_version {
-                    return Err(Error::VersionConflict);
-                }
-            }
+        if let Some(client_version) = &payload.version
+            && let Some(server_version) = &profile.version
+            && client_version != server_version
+        {
+            return Err(Error::VersionConflict);
         }
 
         // Regenerate version for the update
