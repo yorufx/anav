@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ExternalLink, Globe, Edit, Trash2 } from "lucide-react";
+import { ExternalLink, Globe, Edit, Trash2, Link } from "lucide-react";
 import { highlightText } from "@/lib/highlight";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
@@ -62,6 +62,18 @@ export function BookmarkCard({
     onDelete?.(bookmark);
   };
 
+  // 获取另一个链接（如果当前显示内网链接则返回外网链接，反之亦然）
+  const alternateUrl =
+    useIntranetUrl && bookmark.intranet_url
+      ? bookmark.url // 当前是内网链接，返回外网链接
+      : bookmark.intranet_url; // 当前是外网链接，返回内网链接（可能为空）
+
+  const handleOpenAlternate = () => {
+    if (alternateUrl) {
+      window.location.href = alternateUrl;
+    }
+  };
+
   const cardContent = (
     <a
       href={displayUrl}
@@ -114,11 +126,20 @@ export function BookmarkCard({
     </a>
   );
 
-  if (onEdit || onDelete) {
+  if (onEdit || onDelete || alternateUrl) {
     return (
       <ContextMenu>
         <ContextMenuTrigger asChild>{cardContent}</ContextMenuTrigger>
         <ContextMenuContent>
+          {alternateUrl && (
+            <ContextMenuItem onClick={handleOpenAlternate}>
+              <Link className="size-4 mr-2" />
+              {useIntranetUrl && bookmark.intranet_url
+                ? t("bookmarkCard.openExtranet")
+                : t("bookmarkCard.openIntranet")}
+            </ContextMenuItem>
+          )}
+          {alternateUrl && (onEdit || onDelete) && <ContextMenuSeparator />}
           {onEdit && (
             <ContextMenuItem onClick={handleEdit}>
               <Edit className="size-4 mr-2" />
