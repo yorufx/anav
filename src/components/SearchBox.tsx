@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Search, Globe } from "lucide-react";
+import { Search, Globe, Link2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SearchDropdown } from "@/components/SearchDropdown";
 import { Kbd } from "@/components/ui/kbd";
@@ -14,11 +14,13 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import type { Bookmark } from "@/types/bookmark";
 import { iconUrl } from "@/lib/api";
+import { detectUrl } from "@/lib/utils";
 
 interface SearchBoxProps {
   value: string;
   onChange: (value: string) => void;
   onSubmit?: (e: React.FormEvent) => void;
+  onUrlDetected?: (url: string) => void; // 当检测到 URL 时触发
   placeholder?: string;
   className?: string;
   autoFocus?: boolean;
@@ -33,6 +35,7 @@ export function SearchBox({
   value,
   onChange,
   onSubmit,
+  onUrlDetected,
   placeholder,
   className,
   autoFocus = true,
@@ -54,11 +57,17 @@ export function SearchBox({
   const [iconError, setIconError] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  // 检测是否为 URL
+  const detectedUrl = value.trim() ? detectUrl(value) : null;
+  const isUrlMode = detectedUrl !== null && !selectedBookmark;
+
   // 手机模式下不显示 placeholder
   const defaultPlaceholder = isMobile
     ? ""
     : selectedBookmark
     ? t("searchBox.searchInBookmark", { title: selectedBookmark.title })
+    : isUrlMode
+    ? t("searchBox.urlDetected")
     : placeholder || t("searchBox.placeholder");
 
   useEffect(() => {
@@ -89,12 +98,13 @@ export function SearchBox({
   }, [isFocused, isDropdownOpen]);
 
   // 当搜索结果变化时，重置选中索引和下拉框状态
-  // 下拉框显示条件：聚焦 + 有搜索关键词 + 有搜索结果 + 没有选中书签
+  // 下拉框显示条件：聚焦 + 有搜索关键词 + 有搜索结果 + 没有选中书签 + 不是 URL 模式
   const shouldShowDropdown =
     isFocused &&
     value.trim().length > 0 &&
     searchResults.length > 0 &&
-    !selectedBookmark;
+    !selectedBookmark &&
+    !isUrlMode;
 
   useEffect(() => {
     // 使用 setTimeout 避免同步 setState
@@ -112,7 +122,15 @@ export function SearchBox({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // 回车键始终跳转到搜索引擎
+
+    // 如果检测到 URL，直接跳转
+    if (detectedUrl) {
+      onUrlDetected?.(detectedUrl);
+      window.location.href = detectedUrl;
+      return;
+    }
+
+    // 否则执行搜索
     onSubmit?.(e);
   };
 
@@ -204,7 +222,7 @@ export function SearchBox({
   return (
     <form onSubmit={handleSubmit} className={className}>
       <div ref={containerRef} className="relative">
-        {/* 图标：如果选中了书签，显示书签图标，否则显示搜索图标 */}
+        {/* 图标：如果选中了书签，显示书签图标；如果检测到 URL，显示链接图标；否则显示搜索图标 */}
         {selectedBookmark ? (
           selectedBookmark.icon && !iconError ? (
             <img
@@ -216,6 +234,8 @@ export function SearchBox({
           ) : (
             <Globe className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground z-10" />
           )
+        ) : isUrlMode ? (
+          <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-primary z-10" />
         ) : (
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground z-10" />
         )}
@@ -261,6 +281,11 @@ export function SearchBox({
                   </div>
                 )}
               </>
+            ) : isUrlMode ? (
+              <div className="flex items-center gap-1.5">
+                <Kbd>Enter</Kbd>
+                <span>{t("searchBox.openUrl")}</span>
+              </div>
             ) : (
               <>
                 <div className="flex items-center gap-1.5">

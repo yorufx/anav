@@ -159,7 +159,9 @@
     "search": "Search",
     "open": "Open {{title}}",
     "useBookmarkSearch": "Use {{title}} to search",
-    "openBookmark": "Open {{title}}"
+    "openBookmark": "Open {{title}}",
+    "urlDetected": "URL detected, press Enter to visit",
+    "openUrl": "Visit URL"
   },
   "themeToggle": {
     "light": "Light",
