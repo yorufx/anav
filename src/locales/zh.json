@@ -159,7 +159,9 @@
     "search": "搜索",
     "open": "打开{{title}}",
     "useBookmarkSearch": "使用 {{title}} 搜索",
-    "openBookmark": "打开 {{title}}"
+    "openBookmark": "打开 {{title}}",
+    "urlDetected": "检测到链接，按 Enter 访问",
+    "openUrl": "访问链接"
   },
   "themeToggle": {
     "light": "浅色",
