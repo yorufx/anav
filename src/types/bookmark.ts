@@ -27,4 +27,6 @@ export interface BookmarkProfile {
   search_engine: string;
   intranet_check_url?: string;
   background_images?: BackgroundImage[];
+  /** Version UUID for optimistic concurrency control */
+  version?: string;
 }

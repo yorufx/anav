@@ -52,6 +52,9 @@ apiClient.interceptors.response.use(
           window.location.hash = "#/login";
         }
         error.message = "UNAUTHORIZED";
+      } else if (status === 409) {
+        // 版本冲突
+        error.message = i18n.t("axios.versionConflict");
       } else {
         error.message = message;
       }

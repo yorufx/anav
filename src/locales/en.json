@@ -185,6 +185,7 @@
   },
   "axios": {
     "networkError": "Network error, please check network connection",
-    "requestFailed": "Request failed"
+    "requestFailed": "Request failed",
+    "versionConflict": "Data has been modified by another session, please refresh the page and try again"
   }
 }

@@ -185,6 +185,7 @@
   },
   "axios": {
     "networkError": "网络错误，请检查网络连接",
-    "requestFailed": "请求失败"
+    "requestFailed": "请求失败",
+    "versionConflict": "数据已被其他会话修改，请刷新页面后重试"
   }
 }

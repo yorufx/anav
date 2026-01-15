@@ -18,7 +18,14 @@ export async function getProfile(profile?: string): Promise<BookmarkProfile> {
   const profileToUse = profile ?? currentProfile ?? undefined;
   const params = profileToUse ? { profile: profileToUse } : {};
   const response = await apiClient.get("/api/profile", { params });
-  return response.data;
+  const profileData: BookmarkProfile = response.data;
+
+  // Update the stored version
+  if (profileData.version) {
+    useAppStore.getState().setProfileVersion(profileData.version);
+  }
+
+  return profileData;
 }
 
 export async function createProfile(profile: BookmarkProfile): Promise<void> {
@@ -26,7 +33,21 @@ export async function createProfile(profile: BookmarkProfile): Promise<void> {
 }
 
 export async function updateProfile(profile: BookmarkProfile): Promise<void> {
-  await apiClient.put("/api/profile", profile);
+  // Include the current version for optimistic concurrency control
+  const currentVersion = useAppStore.getState().profileVersion;
+  const profileWithVersion: BookmarkProfile = {
+    ...profile,
+    version: currentVersion ?? undefined,
+  };
+
+  await apiClient.put("/api/profile", profileWithVersion);
+
+  // After successful update, fetch the new version
+  // The server will return 409 Conflict if version mismatch
+  const updatedProfile = await getProfile(profile.name);
+  if (updatedProfile.version) {
+    useAppStore.getState().setProfileVersion(updatedProfile.version);
+  }
 }
 
 export async function deleteProfile(profile: string): Promise<void> {

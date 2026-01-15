@@ -22,6 +22,8 @@ pub enum Error {
     InvalidProfileOrder,
     #[error("Invalid image format")]
     InvalidImageFormat,
+    #[error("Version conflict: the profile has been modified by another session")]
+    VersionConflict,
 
     #[error("Bad request")]
     BadRequest,
@@ -52,6 +54,7 @@ impl IntoResponse for Error {
             Error::ProfileAlreadyExists => StatusCode::BAD_REQUEST,
             Error::InvalidProfileOrder => StatusCode::BAD_REQUEST,
             Error::InvalidImageFormat => StatusCode::BAD_REQUEST,
+            Error::VersionConflict => StatusCode::CONFLICT,
 
             _ => StatusCode::INTERNAL_SERVER_ERROR,
         };

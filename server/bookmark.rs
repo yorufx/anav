@@ -47,6 +47,10 @@ pub struct BookmarkProfile {
     /// Background images for the profile.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub background_images: Vec<BackgroundImage>,
+    /// Version UUID for optimistic concurrency control.
+    /// Regenerated on each modification to detect stale updates.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
 }
 
 impl Default for BookmarkProfile {
@@ -58,6 +62,21 @@ impl Default for BookmarkProfile {
             search_engine: "https://www.google.com/search?q={}".to_string(),
             intranet_check_url: None,
             background_images: vec![],
+            version: Some(Uuid::new_v4().to_string()),
         }
+    }
+}
+
+impl BookmarkProfile {
+    /// Ensure the profile has a version, generating one if missing (for backward compatibility).
+    pub fn ensure_version(&mut self) {
+        if self.version.is_none() {
+            self.version = Some(Uuid::new_v4().to_string());
+        }
+    }
+
+    /// Regenerate the version UUID. Called after any modification.
+    pub fn regenerate_version(&mut self) {
+        self.version = Some(Uuid::new_v4().to_string());
     }
 }

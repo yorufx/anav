@@ -94,13 +94,26 @@ pub async fn get_profile(
     Query(params): Query<OptionalProfileQuery>,
 ) -> Result<Json<BookmarkProfile>> {
     let mut storage = app_state.storage.lock().await;
-    if let Some(name) = params.profile.as_deref()
-        && let Some(profile) = storage.get_profile(name)
+    let profile = if let Some(name) = params.profile.as_deref()
+        && let Some(profile) = storage.get_profile_mut(name)
     {
-        Ok(Json(profile.clone()))
+        profile
     } else {
-        Ok(Json(storage.get_default_profile().await.clone()))
+        storage.get_default_profile_mut().await
+    };
+
+    // Ensure the profile has a version (for backward compatibility with old data)
+    let needs_save = profile.version.is_none();
+    profile.ensure_version();
+
+    let result = profile.clone();
+
+    // Save if we generated a new version for old data
+    if needs_save {
+        storage.save_profiles().await?;
     }
+
+    Ok(Json(result))
 }
 
 pub async fn create_profile(
@@ -132,10 +145,21 @@ pub async fn delete_profile(
 
 pub async fn update_profile(
     State(app_state): State<AppState>,
-    Json(payload): Json<BookmarkProfile>,
+    Json(mut payload): Json<BookmarkProfile>,
 ) -> Result<()> {
     let mut storage = app_state.storage.lock().await;
     if let Some(profile) = storage.get_profile_mut(&payload.name) {
+        // Verify version consistency (skip if client version is None for backward compatibility)
+        if let Some(client_version) = &payload.version {
+            if let Some(server_version) = &profile.version {
+                if client_version != server_version {
+                    return Err(Error::VersionConflict);
+                }
+            }
+        }
+
+        // Regenerate version for the update
+        payload.regenerate_version();
         *profile = payload;
     }
     storage.save_profiles().await?;
@@ -158,6 +182,7 @@ pub async fn rename_profile(
     }
     if let Some(profile) = storage.get_profile_mut(&payload.name) {
         profile.name = payload.new_name;
+        profile.regenerate_version();
     }
     storage.save_profiles().await?;
     Ok(())
@@ -509,6 +534,7 @@ pub async fn upload_background_image(
 
     // 添加到 profile
     profile.background_images.push(background_image.clone());
+    profile.regenerate_version();
 
     Ok(Json(background_image))
 }
@@ -536,6 +562,7 @@ pub async fn delete_background_image(
         .position(|bg| bg.id == params.id)
     {
         let bg = profile.background_images.remove(index);
+        profile.regenerate_version();
 
         // 删除文件
         let bg_path = format!("{}/{}", BACKGROUND_DIR, bg.filename);
