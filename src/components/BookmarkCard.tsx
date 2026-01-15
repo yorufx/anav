@@ -70,7 +70,7 @@ export function BookmarkCard({
 
   const handleOpenAlternate = () => {
     if (alternateUrl) {
-      window.open(alternateUrl, "_blank");
+      window.location.href = alternateUrl;
     }
   };
 
