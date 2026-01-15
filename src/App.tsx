@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import { HomePage } from "@/pages/HomePage";
 import { useLanguageSync } from "@/hooks/use-language-sync";
 
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-center" richColors />
+      <Toaster richColors position="top-center" />
       <HashRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
