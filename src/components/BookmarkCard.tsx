@@ -63,61 +63,55 @@ export function BookmarkCard({
   };
 
   const cardContent = (
-    <div
+    <a
+      href={displayUrl}
       className={cn(
         "group border rounded-lg p-3",
         "hover:shadow-md transition-all hover:scale-105",
         "flex items-center gap-2",
         "h-16",
+        "no-underline text-foreground",
+        "cursor-pointer",
         hasBackground
           ? "bg-background/70 backdrop-blur-sm border-border/50"
           : "bg-card border-border"
       )}
     >
-      <a
-        href={displayUrl}
-        className={cn(
-          "flex items-center gap-2 flex-1 min-w-0",
-          "no-underline text-foreground",
-          "cursor-pointer"
-        )}
-      >
-        {bookmark.icon && !iconError ? (
-          <img
-            src={iconUrl(bookmark.icon)}
-            alt={bookmark.title}
-            className="size-7 object-contain rounded-md"
-            onError={() => setIconError(true)}
-          />
-        ) : (
-          <div className="p-1.5 rounded-md bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex items-center justify-center size-7 shrink-0">
-            <Globe className="size-4" />
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="text-sm font-medium truncate">
-              {searchQuery
-                ? highlightText(bookmark.title, searchQuery)
-                : bookmark.title}
-            </div>
-            {bookmark.tags && bookmark.tags.length > 0 && (
-              <div className="flex items-center gap-1 flex-wrap">
-                {bookmark.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+      {bookmark.icon && !iconError ? (
+        <img
+          src={iconUrl(bookmark.icon)}
+          alt={bookmark.title}
+          className="size-7 object-contain rounded-md"
+          onError={() => setIconError(true)}
+        />
+      ) : (
+        <div className="p-1.5 rounded-md bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex items-center justify-center size-7 shrink-0">
+          <Globe className="size-4" />
         </div>
-        <ExternalLink className="size-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-      </a>
-    </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="text-sm font-medium truncate">
+            {searchQuery
+              ? highlightText(bookmark.title, searchQuery)
+              : bookmark.title}
+          </div>
+          {bookmark.tags && bookmark.tags.length > 0 && (
+            <div className="flex items-center gap-1 flex-wrap">
+              {bookmark.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <ExternalLink className="size-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+    </a>
   );
 
   if (onEdit || onDelete) {
